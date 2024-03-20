@@ -1,0 +1,61 @@
+- name: Set the Virtual Machine cloud-init facts
+  block:
+    - name: Set the Virtual Machine cloud-init facts I
+      ansible.builtin.set_fact:
+        vm_cloud_init_config:
+          users:
+            - name: "{{ ansible_user }}"
+              plain_text_passwd: "{{ ansible_password }}"
+              lock_passwd: false
+              shell: /bin/bash
+              groups:
+                - sudo
+        vm_cloud_init_metadata_network:
+          version: 2
+          ethernets:
+            eth0:
+              dhcp4: false
+              addresses:
+                - "{{ ansible_host }}/24"
+              gateway4: "{{ vm_gateway }}"
+              nameservers:
+                addresses:
+                  - "{{ vm_gateway }}"
+    - name: Set the Virtual Machine cloud-init facts II
+      ansible.builtin.set_fact:
+        vm_cloud_init_metadata:
+          network: "{{ vm_cloud_init_metadata_network | ansible.builtin.to_yaml | ansible.builtin.b64encode }}"
+          network.encoding: base64
+
+- name: Create Virtual Machine
+  community.vmware.vmware_guest:
+    validate_certs: false
+    hostname: "{{ vm_vsphere_hostname }}"
+    username: "{{ vm_vsphere_username }}"
+    password: "{{ vm_vsphere_password }}"
+    datacenter: "{{ vm_vsphere_datacenter }}"
+    cluster: "{{ vm_vsphere_cluster }}"
+    folder: "{{ vm_vsphere_folder }}"
+    template: "/{{ vm_vsphere_datacenter }}/vm/{{ vm_vsphere_template }}"
+    name: "{{ inventory_hostname }}"
+    state: powered-on
+    wait_for_ip_address: true
+    annotation: "created from {{ vm_ansible_project_path }}"
+    # NB the advanced_settings data ends-up inside the VM .vmx file.
+    # NB the guestinfo properties will be exposed by cloud-init-vmware-guestinfo
+    #    as a cloud-init datasource.
+    # NB the runcmd output is written to journald and /var/log/cloud-init-output.log.
+    # NB verify that these settings are visible in the guest with:
+    #     vmware-rpctool 'info-get guestinfo.vmtools.description'
+    #     vmware-rpctool 'info-get guestinfo.userdata' | base64 -d
+    #     vmware-rpctool 'info-get guestinfo.metadata' | base64 -d
+    advanced_settings:
+      - key: guestinfo.userdata
+        value: "{{ (\"#cloud-config\n\" + (vm_cloud_init_config | ansible.builtin.to_yaml)) | ansible.builtin.b64encode }}"
+      - key: guestinfo.userdata.encoding
+        value: base64
+      - key: guestinfo.metadata
+        value: "{{ vm_cloud_init_metadata | ansible.builtin.to_json | ansible.builtin.b64encode }}"
+      - key: guestinfo.metadata.encoding
+        value: base64
+  delegate_to: localhost

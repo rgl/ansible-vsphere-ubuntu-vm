@@ -1,0 +1,59 @@
+- name: Add support for the pt_PT locale
+  community.general.locale_gen:
+    name: pt_PT.UTF-8
+
+# see localectl status
+- name: Set the system locale
+  ansible.builtin.shell:
+    executable: /bin/bash
+    cmd: |
+      set -euxo pipefail
+      before="$(localectl status | perl -n -e '/ ([A-Z_]+=.+)/ && print "$1\n"')"
+      localectl set-locale \
+        LANG=en_US.UTF-8 \
+        LC_NUMERIC=pt_PT.UTF-8 \
+        LC_TIME=pt_PT.UTF-8 \
+        LC_MONETARY=pt_PT.UTF-8 \
+        LC_PAPER=pt_PT.UTF-8 \
+        LC_NAME=pt_PT.UTF-8 \
+        LC_ADDRESS=pt_PT.UTF-8 \
+        LC_TELEPHONE=pt_PT.UTF-8 \
+        LC_MEASUREMENT=pt_PT.UTF-8 \
+        LC_IDENTIFICATION=pt_PT.UTF-8
+      after="$(localectl status | perl -n -e '/ ([A-Z_]+=.+)/ && print "$1\n"')"
+      if [ "$before" == "$after" ]; then
+        echo 'ANSIBLE CHANGED NO'
+      fi
+  register: result
+  changed_when: "'ANSIBLE CHANGED NO' not in result.stdout_lines"
+
+# see timedatectl status
+- name: Set the timezone
+  community.general.timezone:
+    name: "{{ base_timezone }}"
+  notify:
+    - Restart cron
+
+- name: Install vim
+  block:
+    - name: Install vim
+      ansible.builtin.apt:
+        name: vim
+        install_recommends: false
+    - name: Install vimrc
+      ansible.builtin.copy:
+        src: vimrc.local
+        dest: /etc/vim/vimrc.local
+        mode: 0444
+
+- name: Install login profile
+  ansible.builtin.copy:
+    src: login.sh
+    dest: /etc/profile.d/login.sh
+    mode: 0444
+
+- name: Install libreadline inputrc
+  ansible.builtin.copy:
+    src: inputrc
+    dest: /etc/inputrc
+    mode: 0444

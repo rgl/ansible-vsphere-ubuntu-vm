@@ -1,0 +1,26 @@
+all:
+  hosts:
+    example1:
+      ansible_host: '{{ vm_first_ip | ansible.utils.ipmath(0) }}'
+      ansible_port: 22
+    example2:
+      ansible_host: '{{ vm_first_ip | ansible.utils.ipmath(1) }}'
+      ansible_port: 22
+  vars:
+    # vsphere configuration.
+    vm_vsphere_hostname: '{{ lookup("env", "VM_VSPHERE_HOSTNAME") }}'
+    vm_vsphere_username: '{{ lookup("env", "VM_VSPHERE_USERNAME") }}'
+    vm_vsphere_password: '{{ lookup("env", "VM_VSPHERE_PASSWORD") }}'
+    vm_vsphere_datacenter: '{{ lookup("env", "VM_VSPHERE_DATACENTER") }}'
+    vm_vsphere_cluster: '{{ lookup("env", "VM_VSPHERE_CLUSTER") }}'
+    vm_vsphere_resource_pool: '{{ lookup("env", "VM_VSPHERE_RESOURCE_POOL") }}'
+    vm_vsphere_template: '{{ lookup("env", "VM_VSPHERE_TEMPLATE") }}'
+    vm_vsphere_folder: '{{ lookup("env", "VM_VSPHERE_FOLDER") }}'
+    vm_gateway: '{{ lookup("env", "VM_GATEWAY") }}'
+    vm_first_ip: '{{ lookup("env", "VM_FIRST_IP") }}'
+    vm_ansible_project_path: '{{ lookup("env", "VM_ANSIBLE_PROJECT_PATH") }}'
+    # connection configuration.
+    # see https://docs.ansible.com/ansible-core/2.15/collections/ansible/builtin/ssh_connection.html
+    ansible_user: admin
+    ansible_password: '{{ lookup("env", "VM_ADMIN_PASSWORD") }}'
+    ansible_sudo_pass: '{{ ansible_password }}'

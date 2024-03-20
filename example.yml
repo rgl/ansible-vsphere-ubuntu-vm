@@ -1,0 +1,15 @@
+- name: Create Virtual Machine
+  hosts:
+    - all
+  gather_facts: false
+  become: false
+  roles:
+    - vm
+
+- name: Configure Ubuntu
+  hosts:
+    - all
+  gather_facts: true
+  become: true
+  roles:
+    - base

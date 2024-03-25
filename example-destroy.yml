@@ -1,0 +1,7 @@
+- name: Destroy Virtual Machine
+  hosts:
+    - all
+  gather_facts: false
+  become: false
+  roles:
+    - vm_destroy

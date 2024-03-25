@@ -39,8 +39,14 @@ Lint the `example.yml` playbook:
 ./ansible-lint.sh --offline --parseable example.yml
 ```
 
-Run the `example.yml` playbook against the `example1` machine:
+Create and configure the `example1` machine using the `example.yml` playbook: 
 
 ```bash
 ./ansible-playbook.sh --limit=example1 example.yml | tee ansible.log
+```
+
+Destroy the `example1` machine using the `example-destroy.yml` playbook: 
+
+```bash
+./ansible-playbook.sh --limit=example1 example-destroy.yml | tee ansible.log
 ```

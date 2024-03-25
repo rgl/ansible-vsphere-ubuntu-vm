@@ -13,6 +13,7 @@ all:
     vm_vsphere_password: '{{ lookup("env", "VM_VSPHERE_PASSWORD") }}'
     vm_vsphere_datacenter: '{{ lookup("env", "VM_VSPHERE_DATACENTER") }}'
     vm_vsphere_cluster: '{{ lookup("env", "VM_VSPHERE_CLUSTER") }}'
+    vm_vsphere_datastore: '{{ lookup("env", "VM_VSPHERE_DATASTORE") }}'
     vm_vsphere_resource_pool: '{{ lookup("env", "VM_VSPHERE_RESOURCE_POOL") }}'
     vm_vsphere_template: '{{ lookup("env", "VM_VSPHERE_TEMPLATE") }}'
     vm_vsphere_folder: '{{ lookup("env", "VM_VSPHERE_FOLDER") }}'

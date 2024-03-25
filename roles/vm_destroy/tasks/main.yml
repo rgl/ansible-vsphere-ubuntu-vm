@@ -1,0 +1,13 @@
+- name: Destroy Virtual Machine
+  community.vmware.vmware_guest:
+    validate_certs: false
+    hostname: "{{ vm_vsphere_hostname }}"
+    username: "{{ vm_vsphere_username }}"
+    password: "{{ vm_vsphere_password }}"
+    datacenter: "{{ vm_vsphere_datacenter }}"
+    cluster: "{{ vm_vsphere_cluster }}"
+    folder: "{{ vm_vsphere_folder }}"
+    name: "{{ inventory_hostname }}"
+    state: absent
+    force: true
+  delegate_to: localhost

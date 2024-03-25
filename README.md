@@ -1,5 +1,7 @@
 # About
 
+[![Build status](https://github.com/rgl/ansible-vsphere-ubuntu-vm/actions/workflows/build.yml/badge.svg)](https://github.com/rgl/ansible-vsphere-ubuntu-vm/actions/workflows/build.yml)
+
 This is an example Ansible project that creates a Ubuntu VMware vSphere Virtual Machine.
 
 For a more complete Ansible Playbook see the [rgl/my-ubuntu-ansible-playbooks repository](https://github.com/rgl/my-ubuntu-ansible-playbooks).
@@ -33,10 +35,11 @@ EOF
 source secrets.sh
 ```
 
-Lint the `example.yml` playbook:
+Lint the playbooks:
 
 ```bash
 ./ansible-lint.sh --offline --parseable example.yml
+./ansible-lint.sh --offline --parseable example-destroy.yml
 ```
 
 Create and configure the `example1` machine using the `example.yml` playbook: 

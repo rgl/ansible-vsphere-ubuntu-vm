@@ -58,4 +58,11 @@
         value: "{{ vm_cloud_init_metadata | ansible.builtin.to_json | ansible.builtin.b64encode }}"
       - key: guestinfo.metadata.encoding
         value: base64
+    disk:
+      - size_gb: 30
+        type: thin
+        datastore: "{{ vm_vsphere_datastore }}"
+      - size_gb: 60
+        type: thin
+        datastore: "{{ vm_vsphere_datastore }}"
   delegate_to: localhost

@@ -1,0 +1,13 @@
+- name: Create the data disk filesystem
+  community.general.filesystem:
+    device: "{{ data_disk_device }}"
+    fstype: btrfs
+    opts: >
+      --label=data
+
+- name: Mount the data disk filesystem
+  ansible.posix.mount:
+    src: LABEL=data
+    fstype: btrfs
+    path: /srv/data
+    state: mounted

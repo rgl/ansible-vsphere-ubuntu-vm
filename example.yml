@@ -12,4 +12,5 @@
   gather_facts: true
   become: true
   roles:
+    - data_disk
     - base

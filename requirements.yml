@@ -1,17 +1,14 @@
 collections:
   # see https://galaxy.ansible.com/ansible/posix
   - name: ansible.posix
-    version: 1.5.4
+    version: 2.1.0
   # see https://galaxy.ansible.com/ansible/utils
   - name: ansible.utils
-    version: 3.1.0
+    version: 6.0.2
   # see https://galaxy.ansible.com/community/general
   - name: community.general
-    version: 8.4.0
-  # see https://galaxy.ansible.com/community/docker
-  - name: community.docker
-    version: 3.8.1
+    version: 12.5.0
   # see https://galaxy.ansible.com/community/vmware
   # see https://github.com/ansible-collections/community.vmware
   - name: community.vmware
-    version: 4.2.0
+    version: 6.2.0

@@ -44,13 +44,15 @@
     wait_for_ip_address: true
     annotation: "created from {{ vm_ansible_project_path }}"
     # NB the advanced_settings data ends-up inside the VM .vmx file.
-    # NB the guestinfo properties will be exposed by cloud-init-vmware-guestinfo
-    #    as a cloud-init datasource.
     # NB the runcmd output is written to journald and /var/log/cloud-init-output.log.
+    # NB the guestinfo properties are used by the VMware cloud-init datasource.
     # NB verify that these settings are visible in the guest with:
     #     vmware-rpctool 'info-get guestinfo.vmtools.description'
     #     vmware-rpctool 'info-get guestinfo.userdata' | base64 -d
     #     vmware-rpctool 'info-get guestinfo.metadata' | base64 -d
+    # see https://docs.cloud-init.io/en/26.1/reference/datasources/vmware.html
+    # see https://github.com/canonical/cloud-init/blob/26.1/cloudinit/sources/DataSourceVMware.py
+    # see /usr/lib/python3/dist-packages/cloudinit/sources/DataSourceVMware.py
     advanced_settings:
       - key: guestinfo.userdata
         value: "{{ (\"#cloud-config\n\" + (vm_cloud_init_config | ansible.builtin.to_yaml)) | ansible.builtin.b64encode }}"

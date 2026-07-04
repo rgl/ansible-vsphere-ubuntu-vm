@@ -10,7 +10,7 @@ For a more complete Ansible Playbook see the [rgl/my-ubuntu-ansible-playbooks re
 
 Execute the following procedure in a Ubuntu machine.
 
-Install the [test/templates/ubuntu-24.04-amd64-vsphere virtual machine template](https://github.com/rgl/ubuntu-vagrant) in your VMware vSphere environment.
+Install the [test/templates/ubuntu-26.04-amd64-vsphere virtual machine template](https://github.com/rgl/ubuntu-vagrant) in your VMware vSphere environment.
 
 Install Docker.
 
@@ -26,7 +26,7 @@ export VM_VSPHERE_PASSWORD='password'
 export VM_VSPHERE_DATACENTER='Datacenter'
 export VM_VSPHERE_CLUSTER='Cluster'
 export VM_VSPHERE_DATASTORE='Datastore'
-export VM_VSPHERE_TEMPLATE='test/templates/ubuntu-24.04-amd64-vsphere'
+export VM_VSPHERE_TEMPLATE='test/templates/ubuntu-26.04-amd64-vsphere'
 export VM_VSPHERE_FOLDER='test'
 export VM_ADMIN_PASSWORD='admin'
 export VM_GATEWAY='10.0.0.1'

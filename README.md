@@ -54,6 +54,30 @@ Create and configure the `example1` machine using the [`example.yml` playbook](e
 ./ansible-playbook.sh --limit=example1 example.yml | tee ansible.log
 ```
 
+Access the `example1` machine (the vSphere Guest):
+
+```bash
+example1_vars="$(ANSIBLE_CALLBACK_RESULT_FORMAT=json ANSIBLE_CALLBACK_FORMAT_PRETTY=false \
+    ./ansible.sh example1 -m debug -a 'var=hostvars[inventory_hostname]' \
+    | grep -oP '(?<=SUCCESS => )\{.*\}')"
+example1_user="$(jq -r '.["hostvars[inventory_hostname]"].ansible_user' <<<"$example1_vars")"
+example1_host="$(jq -r '.["hostvars[inventory_hostname]"].ansible_host' <<<"$example1_vars")"
+ssh "$example1_user@$example1_host"
+sudo -i
+id
+uname -a
+ip addr
+systemctl status
+systemctl status open-vm-tools.service
+networkctl status
+timedatectl status
+cloud-init schema --system --annotate
+cloud-init status --long --wait
+ps -efww --forest
+exit # exit sudo -i
+exit # exit ssh
+```
+
 Destroy the `example1` machine using the [`example-destroy.yml` playbook](example-destroy.yml): 
 
 ```bash

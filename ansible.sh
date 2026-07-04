@@ -29,6 +29,8 @@ exec docker run \
     -v "$PWD:/project:ro" \
     -e GITHUB_ACTIONS \
     -e GITHUB_WORKFLOW \
+    -e ANSIBLE_CALLBACK_RESULT_FORMAT \
+    -e ANSIBLE_CALLBACK_FORMAT_PRETTY \
     -e VM_ANSIBLE_PROJECT_PATH="$PWD" \
     -e VM_VSPHERE_HOSTNAME \
     -e VM_VSPHERE_USERNAME \
